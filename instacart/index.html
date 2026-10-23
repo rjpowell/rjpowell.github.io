@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instacart Autonomous Delivery - Product Team Jam</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --white: #FFFFFF;
+      --tan: #FAF1E5;
+      --black: #1A1A1A;
+      --muted: #666666;
+      --green: #0AAD0A;
+      --orange: #FF7009;
+      --red: #C22F00;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #111;
+      color: var(--black);
+      overflow: hidden;
+    }
+    
+    .slide-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .slide {
+      width: 1920px;
+      height: 1080px;
+      background: var(--white);
+      padding: 80px 100px;
+      display: none;
+      flex-direction: column;
+      transform-origin: center center;
+    }
+    
+    .slide.active { display: flex; }
+    
+    h1 {
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+    
+    .subtitle {
+      font-size: 28px;
+      color: var(--muted);
+      margin-bottom: 40px;
+    }
+    
+    .box {
+      background: var(--tan);
+      border-radius: 16px;
+      padding: 32px 40px;
+    }
+    
+    .box-title {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+    
+    .box-title.green { color: var(--green); }
+    
+    .box-subtitle {
+      font-size: 24px;
+      color: var(--muted);
+    }
+    
+    .metrics {
+      display: flex;
+      gap: 30px;
+      margin-top: 40px;
+    }
+    
+    .metric {
+      flex: 1;
+      background: var(--tan);
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+    
+    .metric-label {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    
+    .metric-value {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    
+    .metric-note {
+      font-size: 18px;
+      color: var(--muted);
+    }
+    
+    .bottom-text {
+      margin-top: auto;
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--black);
+    }
+    
+    /* Grid layouts */
+    .grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px 60px;
+      margin-bottom: 40px;
+    }
+    
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 30px;
+    }
+    
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+    }
+    
+    /* Stakeholder boxes */
+    .stakeholder {
+      background: var(--tan);
+      border-radius: 16px;
+      padding: 28px 32px;
+    }
+    
+    .stakeholder-name {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+    
+    .stakeholder-label {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    
+    .stakeholder-label.orange { color: var(--orange); }
+    
+    .stakeholder-text {
+      font-size: 22px;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+    
+    .stakeholder-tension {
+      font-size: 20px;
+      color: var(--muted);
+    }
+    
+    /* Check items */
+    .check-list {
+      margin-top: 20px;
+    }
+    
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    
+    .check-icon {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    .check-icon.green { color: var(--green); }
+    .check-icon.orange { color: var(--orange); }
+    .check-icon.red { color: var(--red); }
+    
+    /* Solution cards */
+    .solution {
+      background: var(--tan);
+      border-radius: 16px;
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+    }
+    
+    .solution.highlight {
+      border: 3px solid var(--green);
+    }
+    
+    .solution-name {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+    
+    .solution-name.green { color: var(--green); }
+    
+    .solution-desc {
+      font-size: 20px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    
+    .solution-label {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .solution-label.green { color: var(--green); }
+    .solution-label.orange { color: var(--orange); }
+    
+    .solution-list {
+      font-size: 20px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .solution-list.muted { color: var(--muted); }
+    
+    .solution-verdict {
+      margin-top: auto;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    .solution-verdict.green { color: var(--green); }
+    .solution-verdict.orange { color: var(--orange); }
+    .solution-verdict.red { color: var(--red); }
+    
+    /* Assumption boxes */
+    .assumption {
+      background: var(--tan);
+      border-radius: 12px;
+      padding: 20px 28px;
+    }
+    
+    .assumption-cat {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    
+    .assumption-text {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+    
+    .assumption-test-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--orange);
+      margin-bottom: 4px;
+    }
+    
+    .assumption-test {
+      font-size: 20px;
+      color: var(--muted);
+    }
+    
+    /* Recommendation */
+    .rec-main {
+      background: var(--tan);
+      border-radius: 16px;
+      padding: 24px 40px;
+      margin-bottom: 30px;
+    }
+    
+    .rec-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    
+    .rec-subtitle {
+      font-size: 24px;
+      color: var(--muted);
+    }
+    
+    .rec-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      flex: 1;
+    }
+    
+    .rec-box {
+      background: var(--tan);
+      border-radius: 12px;
+      padding: 24px 32px;
+    }
+    
+    .rec-box-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+    
+    .rec-box-title.orange { color: var(--orange); }
+    
+    .rec-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+    
+    .rec-label {
+      font-weight: 500;
+      color: var(--muted);
+      min-width: 100px;
+    }
+    
+    .kill-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    
+    .kill-x {
+      color: var(--red);
+      font-weight: 700;
+    }
+    
+    .outcomes {
+      display: flex;
+      gap: 60px;
+      margin-top: 24px;
+    }
+    
+    .outcome {
+      display: flex;
+      gap: 12px;
+      font-size: 22px;
+    }
+    
+    .outcome-label {
+      font-weight: 700;
+    }
+    
+    .outcome-label.green { color: var(--green); }
+    .outcome-label.orange { color: var(--orange); }
+    
+    /* Navigation */
+    .nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 100;
+    }
+    
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .nav-dot.active {
+      background: var(--green);
+      transform: scale(1.2);
+    }
+    
+    .slide-number {
+      position: fixed;
+      bottom: 30px;
+      right: 40px;
+      color: var(--muted);
+      font-size: 24px;
+      font-weight: 500;
+      z-index: 100;
+      background: rgba(255,255,255,0.9);
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+    
+    /* Insight box */
+    .insight-box {
+      background: var(--tan);
+      border-radius: 12px;
+      padding: 20px 32px;
+      margin-top: auto;
+    }
+    
+    .insight-label {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    
+    .insight-text {
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--black);
+    }
+    
+    .section-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide-container">
+    
+    <!-- Slide 1: The Answer -->
+    <div class="slide active" id="slide1">
+      <h1>Recommendation</h1>
+      <p class="subtitle">Should Instacart invest in autonomous delivery?</p>
+      
+      <div class="box" style="margin-bottom: 50px;">
+        <div class="box-title green">Run a 4-6 week discovery sprint before committing to a pilot.</div>
+        <div class="box-subtitle">Validate assumptions first. If discovery fails, stop early with minimal investment.</div>
+      </div>
+      
+      <div class="section-title">Why validate before piloting?</div>
+      <div class="check-list" style="margin-top: 20px;">
+        <div class="check-item">
+          <span class="check-icon green">✓</span>
+          <span>Economics are unproven (Amazon drones cost $63 vs $3.50 for their standard delivery)</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon green">✓</span>
+          <span>Speed advantage is minimal (Instacart priority already delivers in ~30 min)</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon green">✓</span>
+          <span>Shopper displacement could conflict with Instacart's values ("Serve generously")</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon green">✓</span>
+          <span>Discovery is cheaper than a pilot - surveys, RFPs, fake door test, retailer conversations</span>
+        </div>
+      </div>
+      
+      <p class="bottom-text">The rest of this deck: opportunity, competitive intel, options, discovery sprint design, and decision criteria.</p>
+    </div>
+    
+    <!-- Slide 2: The Opportunity -->
+    <div class="slide" id="slide2">
+      <h1>The Opportunity</h1>
+      <p class="subtitle">Instacart is exploring ways to optimize last-mile fulfillment.</p>
+      
+      <div class="box" style="margin-bottom: 30px;">
+        <div class="box-title green">Leadership is excited</div>
+        <div class="box-subtitle" style="margin-top: 12px; font-size: 26px;">Potential to reduce fulfillment costs, increase delivery speeds, and deliver novel experiences to customers.</div>
+      </div>
+      
+      <div class="box" style="margin-bottom: 30px;">
+        <div class="box-title orange">But there are concerns about feasibility and scalability</div>
+        <div class="box-subtitle" style="margin-top: 12px; font-size: 22px;">The next slide reviews what competitors are actually seeing.</div>
+      </div>
+      
+      <div class="insight-box">
+        <div class="insight-label">Key consideration</div>
+        <div class="insight-text">Instacart's four-sided marketplace (consumers, shoppers, retailers, brands) means any change to delivery affects multiple stakeholders.</div>
+      </div>
+    </div>
+    
+    <!-- Slide 3: Competitive Intel -->
+    <div class="slide" id="slide3">
+      <h1>Competitive Intel</h1>
+      <p class="subtitle">What are Amazon and Walmart doing with autonomous delivery?</p>
+      
+      <div class="grid-2" style="margin-bottom: 40px;">
+        <div class="box">
+          <div class="box-title" style="color: #FF9900;">Amazon Prime Air</div>
+          <div class="rec-row" style="margin-top: 20px;"><strong>Current drone cost:</strong> $63/delivery (2025 internal projection)</div>
+          <div class="rec-row"><strong>Standard delivery cost:</strong> ~$3.50/delivery (own network)</div>
+          <div class="rec-row"><strong>Third-party delivery:</strong> $4.50-5.50/delivery</div>
+          <div class="rec-row"><strong>Drone vs standard:</strong> 18x more expensive</div>
+          <div class="rec-row"><strong>Status:</strong> Testing in limited Arizona locations, paused in some areas</div>
+          <div class="rec-row"><strong>Constraints:</strong> Items under 5 lbs, 7 launches/hour per facility</div>
+        </div>
+        <div class="box">
+          <div class="box-title" style="color: #0071CE;">Walmart</div>
+          <div class="rec-row" style="margin-top: 20px;"><strong>Milestone:</strong> 1M+ drone deliveries (2026)</div>
+          <div class="rec-row"><strong>Reality check:</strong> 1M is a rounding error vs 3.5B same/next-day units in Q1 2026</div>
+          <div class="rec-row"><strong>Coverage:</strong> 70 stores out of 4,600 US locations (1.5%)</div>
+          <div class="rec-row"><strong>Current cost:</strong> ~$30/delivery, targeting under $7</div>
+          <div class="rec-row"><strong>Payload:</strong> Max 2.5-8 lbs depending on drone</div>
+          <div class="rec-row"><strong>Use case:</strong> "Last-minute, urgent, convenience-driven items" only</div>
+          <div class="rec-row"><strong>Model:</strong> Partner-based (Wing, Zipline, DroneUp)</div>
+        </div>
+      </div>
+      
+      <div class="insight-box">
+        <div class="insight-label">Key takeaway</div>
+        <div class="insight-text">Both are investing heavily, but scale remains tiny and economics are unproven. This is still an experiment, not a proven business.</div>
+      </div>
+    </div>
+    
+    <!-- Slide 4: Options Considered -->
+    <div class="slide" id="slide4">
+      <h1>Options Considered</h1>
+      <p class="subtitle">Instacart's four paths for autonomous delivery</p>
+      
+      <div class="grid-2x2" style="gap: 24px 30px;">
+        <div class="solution" style="height: auto; padding: 24px;">
+          <div class="solution-name">Build In-House</div>
+          <div class="solution-desc">Develop proprietary drone/robot fleet</div>
+          <div class="solution-label green">Pros</div>
+          <div class="solution-list">• Full control • Long-term differentiation</div>
+          <div class="solution-label orange">Cons</div>
+          <div class="solution-list muted">• Massive capital • Years to scale • Not core competency</div>
+          <div class="solution-verdict red">Rejected: Too risky</div>
+        </div>
+        <div class="solution" style="height: auto; padding: 24px;">
+          <div class="solution-name">Partner Pilot</div>
+          <div class="solution-desc">6-month test with Wing or Nuro</div>
+          <div class="solution-label green">Pros</div>
+          <div class="solution-list">• Real operational data • Test with actual customers</div>
+          <div class="solution-label orange">Cons</div>
+          <div class="solution-list muted">• Still requires integration investment • Partner dependency</div>
+          <div class="solution-verdict orange">Maybe later: After discovery</div>
+        </div>
+        <div class="solution" style="height: auto; padding: 24px;">
+          <div class="solution-name">Wait & Watch</div>
+          <div class="solution-desc">Monitor competitors, invest later</div>
+          <div class="solution-label green">Pros</div>
+          <div class="solution-list">• Zero investment • Learn from others</div>
+          <div class="solution-label orange">Cons</div>
+          <div class="solution-list muted">• Cede positioning • May be too late</div>
+          <div class="solution-verdict orange">Rejected: Too passive</div>
+        </div>
+        <div class="solution highlight" style="height: auto; padding: 24px;">
+          <div class="solution-name green">Discovery Sprint</div>
+          <div class="solution-desc">4-6 weeks to validate assumptions before any pilot</div>
+          <div class="solution-label green">Pros</div>
+          <div class="solution-list">• Minimal investment • Test demand with fake door • Get real cost quotes • Gauge retailer/shopper sentiment</div>
+          <div class="solution-label orange">Cons</div>
+          <div class="solution-list muted">• No real operational data yet</div>
+          <div class="solution-verdict green">Selected: Validate first</div>
+        </div>
+      </div>
+      
+      <p class="bottom-text">Validate assumptions before committing to a pilot. If discovery fails, stop early.</p>
+    </div>
+    
+    <!-- Slide 5: Discovery Sprint -->
+    <div class="slide" id="slide5">
+      <h1>Discovery Sprint</h1>
+      <p class="subtitle">4-6 weeks to validate assumptions before any pilot investment</p>
+      
+      <div class="rec-columns" style="flex: none; margin-bottom: 30px;">
+        <div class="rec-box">
+          <div class="rec-box-title">What we do</div>
+          <div class="rec-row"><strong>Customer:</strong> Fake door at checkout + survey</div>
+          <div class="rec-row"><strong>Shopper:</strong> Fake door in batch view + survey</div>
+          <div class="rec-row"><strong>Retailer:</strong> Portal CTA + direct conversations</div>
+          <div class="rec-row"><strong>Provider RFP:</strong> Cost quotes from Wing, Nuro, DroneUp</div>
+          <div class="rec-row"><strong>Technical review:</strong> Payload, weather, range constraints</div>
+        </div>
+        <div class="rec-box">
+          <div class="rec-box-title">What we learn</div>
+          <div class="rec-row"><strong>Demand:</strong> Do customers actually want this?</div>
+          <div class="rec-row"><strong>Economics:</strong> Can providers hit &lt;$15/delivery?</div>
+          <div class="rec-row"><strong>Retailer appetite:</strong> Will partners opt in?</div>
+          <div class="rec-row"><strong>Brand risk:</strong> Will shoppers revolt?</div>
+          <div class="rec-row"><strong>Feasibility:</strong> What % of orders are even eligible?</div>
+        </div>
+      </div>
+      
+      <div class="section-title">Decision gate at week 6</div>
+      <div class="check-list" style="margin-top: 16px;">
+        <div class="check-item">
+          <span class="check-icon green">✓</span>
+          <span><strong>If positive:</strong> Proceed to 6-month partner pilot in Phoenix suburbs</span>
+        </div>
+        <div class="check-item">
+          <span class="check-icon red">✗</span>
+          <span><strong>If negative:</strong> Stop here. Minimal investment lost. Revisit in 12-18 months.</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Slide 6: Decision Criteria -->
+    <div class="slide" id="slide6">
+      <h1>Decision Criteria</h1>
+      <p class="subtitle">What must be true to proceed from discovery to pilot?</p>
+      
+      <div class="grid-2x2">
+        <div class="assumption">
+          <div class="assumption-cat" style="color: var(--green);">✓ Testable in Discovery</div>
+          <div class="assumption-text">Cost: Providers can hit &lt;$15/delivery</div>
+          <div class="assumption-test-label">How:</div>
+          <div class="assumption-test">RFP responses with real pricing</div>
+        </div>
+        <div class="assumption">
+          <div class="assumption-cat" style="color: var(--green);">✓ Testable in Discovery</div>
+          <div class="assumption-text">Demand: Customers want this</div>
+          <div class="assumption-test-label">How:</div>
+          <div class="assumption-test">Customer fake door: "Drone delivery" option at checkout</div>
+        </div>
+        <div class="assumption">
+          <div class="assumption-cat" style="color: var(--green);">✓ Testable in Discovery</div>
+          <div class="assumption-text">Retailers: Partners will opt in</div>
+          <div class="assumption-test-label">How:</div>
+          <div class="assumption-test">Retailer portal fake door + direct conversations</div>
+        </div>
+        <div class="assumption">
+          <div class="assumption-cat" style="color: var(--green);">✓ Testable in Discovery</div>
+          <div class="assumption-text">Shoppers: No brand revolt risk</div>
+          <div class="assumption-test-label">How:</div>
+          <div class="assumption-test">Shopper fake door: "Send via drone" option on small batches</div>
+        </div>
+        <div class="assumption">
+          <div class="assumption-cat" style="color: var(--orange);">⚠ Requires Pilot</div>
+          <div class="assumption-text">Reliability: Handles grocery payload</div>
+          <div class="assumption-test-label">How:</div>
+          <div class="assumption-test">Real operations data (if we proceed)</div>
+        </div>
+        <div class="assumption">
+          <div class="assumption-cat" style="color: var(--orange);">⚠ Requires Pilot</div>
+          <div class="assumption-text">Consumer satisfaction: Repeat usage</div>
+          <div class="assumption-test-label">How:</div>
+          <div class="assumption-test">NPS and retention (if we proceed)</div>
+        </div>
+      </div>
+      
+      <p class="bottom-text">Discovery validates 4 of 6 assumptions. Only proceed to pilot if all 4 pass.</p>
+    </div>
+    
+    <!-- Slide 7: What Happens Next -->
+    <div class="slide" id="slide7">
+      <h1>What Happens Next</h1>
+      <p class="subtitle">Present discovery findings to leadership with a clear recommendation</p>
+      
+      <div class="rec-columns" style="flex: none;">
+        <div class="rec-box">
+          <div class="rec-box-title green">If Discovery Passes → Propose Pilot</div>
+          <div style="font-size: 18px; color: var(--muted); margin-bottom: 16px;">Share findings with leadership and recommend:</div>
+          <div class="rec-row">• <strong>Where:</strong> Phoenix suburbs, 1-2 zones, Wing or Nuro</div>
+          <div class="rec-row">• <strong>Eligible orders:</strong> ≤10 items, ≤5 lbs, ≤3 mi, clear weather</div>
+          <div class="rec-row">• <strong>Customer experience:</strong> Drone option at checkout, live tracking, ETA</div>
+          <div class="rec-row">• <strong>Shopper experience:</strong> Dispatch to drone or deliver, focus on larger orders</div>
+          <div class="rec-row">• <strong>Measure:</strong> Cost, reliability, NPS, repeat usage</div>
+        </div>
+        <div class="rec-box">
+          <div class="rec-box-title orange">If Discovery Fails → Recommend Stop</div>
+          <div style="font-size: 18px; color: var(--muted); margin-bottom: 16px;">Present findings and recommend not proceeding if:</div>
+          <div class="kill-item"><span class="kill-x">✗</span> Provider pricing &gt;$25/delivery</div>
+          <div class="kill-item"><span class="kill-x">✗</span> Fake door click rate &lt;2%</div>
+          <div class="kill-item"><span class="kill-x">✗</span> No retailers willing to participate</div>
+          <div class="kill-item"><span class="kill-x">✗</span> Shopper survey shows high backlash risk</div>
+          <div class="kill-item"><span class="kill-x">✗</span> &lt;10% of orders are drone-eligible (weight/distance)</div>
+        </div>
+      </div>
+      
+      <div class="outcomes" style="margin-top: 40px;">
+        <div class="outcome">
+          <span class="outcome-label green">Best case:</span>
+          <span>Leadership approves pilot → Expand to more markets</span>
+        </div>
+        <div class="outcome">
+          <span class="outcome-label orange">Worst case:</span>
+          <span>Discovery fails → Recommend stop with &lt;$50K invested. Revisit in 12-18 months.</span>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="nav" id="nav"></div>
+  <div class="slide-number" id="slideNumber">1 / 6</div>
+  
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const nav = document.getElementById('nav');
+    const slideNumber = document.getElementById('slideNumber');
+    let currentSlide = 0;
+    
+    // Create nav dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goToSlide(i);
+      nav.appendChild(dot);
+    });
+    
+    function goToSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      nav.children[currentSlide].classList.remove('active');
+      currentSlide = n;
+      slides[currentSlide].classList.add('active');
+      nav.children[currentSlide].classList.add('active');
+      slideNumber.textContent = `${currentSlide + 1} / ${slides.length}`;
+    }
+    
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % slides.length);
+    }
+    
+    function prevSlide() {
+      goToSlide((currentSlide - 1 + slides.length) % slides.length);
+    }
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
+      }
+    });
+    
+    // Click navigation
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav')) {
+        nextSlide();
+      }
+    });
+    
+    // Scale slides to fit viewport
+    function scaleSlides() {
+      const container = document.querySelector('.slide-container');
+      const scaleX = window.innerWidth / 1920;
+      const scaleY = window.innerHeight / 1080;
+      const scale = Math.min(scaleX, scaleY, 1);
+      
+      slides.forEach(slide => {
+        slide.style.transform = `scale(${scale})`;
+      });
+    }
+    
+    window.addEventListener('resize', scaleSlides);
+    scaleSlides();
+  </script>
+</body>
+</html>

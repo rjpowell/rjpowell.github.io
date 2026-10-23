@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instacart Shopper Survey | Delivery Experience Feedback</title>
+  <style>
+    :root {
+      --green: #0AAD0A;
+      --green-light: #E8F5E8;
+      --orange: #FF7009;
+      --orange-light: #FFF3EB;
+      --tan: #FAF1E5;
+      --text: #1A1A1A;
+      --muted: #666;
+      --border: #E0E0E0;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F5F5;
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    
+    .header-content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    .intro {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .intro h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .intro p {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .intro .time {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tan);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: var(--text);
+      margin-top: 8px;
+    }
+    
+    .form-section {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .section-desc {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .question {
+      margin-bottom: 28px;
+    }
+    
+    .question:last-child {
+      margin-bottom: 0;
+    }
+    
+    .question-label {
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .required {
+      color: var(--orange);
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .option:hover {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    
+    .option input {
+      margin-top: 2px;
+      accent-color: var(--green);
+      width: 18px;
+      height: 18px;
+    }
+    
+    .option-text {
+      flex: 1;
+    }
+    
+    .option-main {
+      font-weight: 500;
+    }
+    
+    .option-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    
+    .scale-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .scale-option {
+      flex: 1;
+      min-width: 60px;
+      text-align: center;
+      padding: 12px 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .scale-option:hover {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    
+    .scale-option input {
+      display: none;
+    }
+    
+    .scale-option.selected {
+      border-color: var(--green);
+      background: var(--green);
+      color: white;
+    }
+    
+    .scale-number {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .scale-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    
+    .scale-option.selected .scale-label {
+      color: rgba(255,255,255,0.8);
+    }
+    
+    .scale-endpoints {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.15s ease;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--green);
+    }
+    
+    .scenario-box {
+      background: var(--tan);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .scenario-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .scenario-icon {
+      font-size: 20px;
+    }
+    
+    .scenario-text {
+      font-size: 15px;
+      color: var(--text);
+    }
+    
+    .submit-section {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    
+    .submit-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 16px 48px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    
+    .submit-btn:hover {
+      background: #099309;
+    }
+    
+    .privacy-note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 28px 0;
+    }
+    
+    /* Success state */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 48px 32px;
+    }
+    
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+    }
+    
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .success-text {
+      color: var(--muted);
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">I</div>
+      <div class="header-title">Instacart Shopper Research</div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="intro">
+      <h1>Help Shape the Future of Delivery</h1>
+      <p>We're exploring new delivery options and want to hear from the people who know delivery best: our shoppers. Your honest feedback will directly influence our decisions.</p>
+      <p>This survey is confidential. Individual responses will not be shared with your account or affect your shopper status.</p>
+      <div class="time">⏱️ Takes about 5 minutes</div>
+    </div>
+    
+    <form id="survey-form">
+      <!-- Section 1: Current Experience -->
+      <div class="form-section">
+        <div class="section-title">Your Delivery Experience</div>
+        <div class="section-desc">Help us understand your current work patterns</div>
+        
+        <div class="question">
+          <label class="question-label">How long have you been an Instacart shopper? <span class="required">*</span></label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="tenure" value="<6months" required>
+              <span class="option-text"><span class="option-main">Less than 6 months</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="tenure" value="6-12months">
+              <span class="option-text"><span class="option-main">6 months to 1 year</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="tenure" value="1-2years">
+              <span class="option-text"><span class="option-main">1 to 2 years</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="tenure" value="2+years">
+              <span class="option-text"><span class="option-main">More than 2 years</span></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">On average, how many batches do you complete per week? <span class="required">*</span></label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="batches" value="1-10" required>
+              <span class="option-text"><span class="option-main">1-10 batches</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="batches" value="11-20">
+              <span class="option-text"><span class="option-main">11-20 batches</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="batches" value="21-30">
+              <span class="option-text"><span class="option-main">21-30 batches</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="batches" value="30+">
+              <span class="option-text"><span class="option-main">More than 30 batches</span></span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">What percentage of your earnings typically come from tips? <span class="required">*</span></label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="tips" value="<25%" required>
+              <span class="option-text"><span class="option-main">Less than 25%</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="tips" value="25-50%">
+              <span class="option-text"><span class="option-main">25% to 50%</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="tips" value="50-75%">
+              <span class="option-text"><span class="option-main">50% to 75%</span></span>
+            </label>
+            <label class="option">
+              <input type="radio" name="tips" value="75%+">
+              <span class="option-text"><span class="option-main">More than 75%</span></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section 2: Scenario A - Threat Framing -->
+      <div class="form-section">
+        <div class="section-title">Scenario A</div>
+        <div class="section-desc">Please read the following scenario and share your reaction</div>
+        
+        <div class="scenario-box">
+          <div class="scenario-title"><span class="scenario-icon">🤖</span> Autonomous Delivery</div>
+          <div class="scenario-text">Instacart is considering using drones or robots to handle some deliveries. This would mean some orders are delivered autonomously instead of by shoppers.</div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">How would you feel about this change? <span class="required">*</span></label>
+          <div class="scale-options" id="scale1">
+            <label class="scale-option" onclick="selectScale(this, 'scenario_a')">
+              <input type="radio" name="scenario_a" value="1" required>
+              <div class="scale-number">1</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_a')">
+              <input type="radio" name="scenario_a" value="2">
+              <div class="scale-number">2</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_a')">
+              <input type="radio" name="scenario_a" value="3">
+              <div class="scale-number">3</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_a')">
+              <input type="radio" name="scenario_a" value="4">
+              <div class="scale-number">4</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_a')">
+              <input type="radio" name="scenario_a" value="5">
+              <div class="scale-number">5</div>
+            </label>
+          </div>
+          <div class="scale-endpoints">
+            <span>Very negative</span>
+            <span>Very positive</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section 3: Scenario B - Benefit Framing -->
+      <div class="form-section">
+        <div class="section-title">Scenario B</div>
+        <div class="section-desc">Now consider this alternative framing</div>
+        
+        <div class="scenario-box">
+          <div class="scenario-title"><span class="scenario-icon">📦</span> Small Order Automation</div>
+          <div class="scenario-text">Instacart is considering using drones or robots to handle <strong>only small, low-tip orders</strong> (under 10 items, short distances). This would let shoppers focus on <strong>larger orders with higher tips</strong>.</div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">How would you feel about this change? <span class="required">*</span></label>
+          <div class="scale-options" id="scale2">
+            <label class="scale-option" onclick="selectScale(this, 'scenario_b')">
+              <input type="radio" name="scenario_b" value="1" required>
+              <div class="scale-number">1</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_b')">
+              <input type="radio" name="scenario_b" value="2">
+              <div class="scale-number">2</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_b')">
+              <input type="radio" name="scenario_b" value="3">
+              <div class="scale-number">3</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_b')">
+              <input type="radio" name="scenario_b" value="4">
+              <div class="scale-number">4</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'scenario_b')">
+              <input type="radio" name="scenario_b" value="5">
+              <div class="scale-number">5</div>
+            </label>
+          </div>
+          <div class="scale-endpoints">
+            <span>Very negative</span>
+            <span>Very positive</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">Which would you prefer? <span class="required">*</span></label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="preference" value="current" required>
+              <span class="option-text">
+                <span class="option-main">Keep things as they are</span>
+                <span class="option-sub">I want to deliver all orders, including small ones</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="preference" value="automation">
+              <span class="option-text">
+                <span class="option-main">Let automation handle small orders</span>
+                <span class="option-sub">I'd rather focus on larger, higher-tip orders</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="preference" value="unsure">
+              <span class="option-text">
+                <span class="option-main">Not sure / need more information</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section 4: In-Store Only -->
+      <div class="form-section">
+        <div class="section-title">In-Store Shopping</div>
+        <div class="section-desc">Some shoppers work in-store only (shopping without delivery)</div>
+        
+        <div class="question">
+          <label class="question-label">Would you consider in-store-only shopping if it were available in your area? <span class="required">*</span></label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="instore" value="yes" required>
+              <span class="option-text">
+                <span class="option-main">Yes, I'd be interested</span>
+                <span class="option-sub">I'd consider switching to in-store only</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="instore" value="maybe">
+              <span class="option-text">
+                <span class="option-main">Maybe, depends on the pay</span>
+                <span class="option-sub">I'd need to see the earnings potential first</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="instore" value="no">
+              <span class="option-text">
+                <span class="option-main">No, delivery is important to me</span>
+                <span class="option-sub">I prefer the full shopping + delivery experience</span>
+              </span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">What's the main reason you chose your answer above?</label>
+          <textarea name="instore_reason" placeholder="Share your thoughts..."></textarea>
+        </div>
+      </div>
+      
+      <!-- Section 5: Open Feedback -->
+      <div class="form-section">
+        <div class="section-title">Final Thoughts</div>
+        <div class="section-desc">Anything else you'd like us to know</div>
+        
+        <div class="question">
+          <label class="question-label">What concerns, if any, do you have about autonomous delivery?</label>
+          <textarea name="concerns" placeholder="Share any concerns..."></textarea>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">What would make you more supportive of autonomous delivery options?</label>
+          <textarea name="support" placeholder="Share your ideas..."></textarea>
+        </div>
+      </div>
+      
+      <!-- Submit -->
+      <div class="submit-section">
+        <button type="submit" class="submit-btn">Submit Survey</button>
+        <p class="privacy-note">🔒 Your responses are confidential and will not affect your shopper account.</p>
+        
+        <div class="success-message" id="success">
+          <div class="success-icon">✓</div>
+          <div class="success-title">Thank you!</div>
+          <div class="success-text">Your feedback has been submitted. We appreciate you taking the time to share your thoughts.</div>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <script>
+    function selectScale(el, name) {
+      // Remove selected class from siblings
+      const parent = el.parentElement;
+      parent.querySelectorAll('.scale-option').forEach(opt => opt.classList.remove('selected'));
+      // Add selected class to clicked
+      el.classList.add('selected');
+    }
+    
+    document.getElementById('survey-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Hide form, show success
+      const form = document.getElementById('survey-form');
+      const sections = form.querySelectorAll('.form-section');
+      sections.forEach(s => s.style.display = 'none');
+      
+      const submitSection = form.querySelector('.submit-section');
+      submitSection.querySelector('.submit-btn').style.display = 'none';
+      submitSection.querySelector('.privacy-note').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+      
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instacart Platform Portal | Retailer Dashboard</title>
+  <style>
+    :root {
+      --green: #0AAD0A;
+      --green-dark: #099309;
+      --green-light: #E8F5E8;
+      --orange: #FF7009;
+      --tan: #FAF1E5;
+      --text: #1A1A1A;
+      --muted: #666;
+      --light-muted: #999;
+      --border: #E5E5E5;
+      --bg: #F5F5F5;
+      --sidebar: #1A1A1A;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    
+    /* Layout */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background: var(--sidebar);
+      color: white;
+      padding: 20px 0;
+      flex-shrink: 0;
+    }
+    
+    .sidebar-logo {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 16px;
+    }
+    
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .portal-label {
+      font-size: 11px;
+      color: var(--light-muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .retailer-name {
+      padding: 12px 20px;
+      background: rgba(255,255,255,0.05);
+      margin: 0 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .retailer-logo {
+      width: 28px;
+      height: 28px;
+      background: white;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    
+    .nav-section {
+      padding: 0 12px;
+      margin-bottom: 24px;
+    }
+    
+    .nav-section-title {
+      font-size: 11px;
+      color: var(--light-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 0 8px;
+      margin-bottom: 8px;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s ease;
+    }
+    
+    .nav-item:hover {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    
+    .nav-item.active {
+      background: var(--green);
+      color: white;
+    }
+    
+    .nav-icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+    
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Top bar */
+    .topbar {
+      background: white;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .topbar-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .topbar-search {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 280px;
+      font-size: 14px;
+    }
+    
+    .topbar-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--green-dark);
+    }
+    
+    /* Content area */
+    .content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+    
+    /* Drone banner - THE FAKE DOOR */
+    .drone-banner {
+      background: linear-gradient(135deg, #0AAD0A 0%, #0CC70C 100%);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .drone-banner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(10, 173, 10, 0.3);
+    }
+    
+    .drone-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+    
+    .drone-banner-icon {
+      font-size: 48px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .drone-banner-content {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .drone-banner-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .drone-banner-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    
+    .drone-banner-subtitle {
+      font-size: 15px;
+      opacity: 0.9;
+    }
+    
+    .drone-banner-cta {
+      background: white;
+      color: var(--green-dark);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.15s ease;
+    }
+    
+    .drone-banner:hover .drone-banner-cta {
+      transform: scale(1.05);
+    }
+    
+    /* Stats grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    .stat-change {
+      font-size: 13px;
+      margin-top: 8px;
+    }
+    
+    .stat-change.up {
+      color: var(--green);
+    }
+    
+    .stat-change.down {
+      color: var(--orange);
+    }
+    
+    /* Chart placeholder */
+    .chart-section {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    
+    .chart-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .chart-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    .chart-period {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 6px 12px;
+      background: var(--bg);
+      border-radius: 6px;
+    }
+    
+    .chart-placeholder {
+      height: 200px;
+      background: linear-gradient(180deg, var(--green-light) 0%, white 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      gap: 8px;
+    }
+    
+    .chart-bar {
+      flex: 1;
+      background: var(--green);
+      border-radius: 4px 4px 0 0;
+      opacity: 0.7;
+    }
+    
+    /* Top products */
+    .products-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .product-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .product-rank {
+      width: 24px;
+      height: 24px;
+      background: var(--bg);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    
+    .product-name {
+      flex: 1;
+      font-size: 14px;
+    }
+    
+    .product-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .modal {
+      background: white;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 560px;
+      overflow: hidden;
+    }
+    
+    .modal-header {
+      background: linear-gradient(135deg, #0AAD0A 0%, #0CC70C 100%);
+      color: white;
+      padding: 32px;
+      text-align: center;
+    }
+    
+    .modal-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+    
+    .modal-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .modal-subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .modal-body {
+      padding: 32px;
+    }
+    
+    .modal-features {
+      margin-bottom: 28px;
+    }
+    
+    .modal-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .modal-feature:last-child {
+      border-bottom: none;
+    }
+    
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--green-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    
+    .feature-text {
+      flex: 1;
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .feature-desc {
+      font-size: 14px;
+      color: var(--muted);
+    }
+    
+    .modal-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .modal-btn {
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+    
+    .modal-btn-primary {
+      background: var(--green);
+      color: white;
+    }
+    
+    .modal-btn-primary:hover {
+      background: var(--green-dark);
+    }
+    
+    .modal-btn-secondary {
+      background: var(--bg);
+      color: var(--text);
+    }
+    
+    .modal-btn-secondary:hover {
+      background: var(--border);
+    }
+    
+    /* Success modal */
+    .success-content {
+      text-align: center;
+      padding: 48px 32px;
+    }
+    
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      margin: 0 auto 24px;
+    }
+    
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .success-text {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    
+    /* Prototype label */
+    .prototype-label {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1001;
+    }
+    
+    @media (max-width: 1024px) {
+      .sidebar {
+        width: 200px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .chart-section {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="prototype-label">🧪 Prototype: Retailer Portal Fake Door</div>
+  
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-text">
+          <div class="logo-icon">I</div>
+          <span>Instacart</span>
+        </div>
+        <div class="portal-label">Platform Portal</div>
+      </div>
+      
+      <div class="retailer-name">
+        <div class="retailer-logo">🏪</div>
+        <span>Safeway</span>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-section-title">Overview</div>
+        <div class="nav-item active">
+          <span class="nav-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">📈</span>
+          <span>Analytics</span>
+        </div>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-section-title">Operations</div>
+        <div class="nav-item">
+          <span class="nav-icon">📦</span>
+          <span>Orders</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">📋</span>
+          <span>Catalog</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">🏬</span>
+          <span>Stores</span>
+        </div>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-section-title">Marketing</div>
+        <div class="nav-item">
+          <span class="nav-icon">🎨</span>
+          <span>Merchandising</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">📣</span>
+          <span>Promotions</span>
+        </div>
+      </div>
+      
+      <div class="nav-section">
+        <div class="nav-section-title">Settings</div>
+        <div class="nav-item">
+          <span class="nav-icon">👥</span>
+          <span>Users</span>
+        </div>
+        <div class="nav-item">
+          <span class="nav-icon">⚙️</span>
+          <span>Settings</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main content -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-actions">
+          <input type="text" class="topbar-search" placeholder="Search orders, products...">
+          <div class="topbar-avatar">JD</div>
+        </div>
+      </div>
+      
+      <div class="content">
+        <!-- FAKE DOOR BANNER -->
+        <div class="drone-banner" onclick="showModal('modal-info')">
+          <div class="drone-banner-icon">🚁</div>
+          <div class="drone-banner-content">
+            <div class="drone-banner-badge">✨ NEW PILOT PROGRAM</div>
+            <div class="drone-banner-title">Drone Delivery Pilot</div>
+            <div class="drone-banner-subtitle">Offer faster delivery on small orders. Be among the first retailers to try autonomous delivery.</div>
+          </div>
+          <div class="drone-banner-cta">Learn More & Opt In →</div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">GMV (This Month)</div>
+            <div class="stat-value">$2.4M</div>
+            <div class="stat-change up">↑ 12% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Orders</div>
+            <div class="stat-value">18,432</div>
+            <div class="stat-change up">↑ 8% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Avg Basket Size</div>
+            <div class="stat-value">$68.42</div>
+            <div class="stat-change up">↑ 3% vs last month</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Fulfillment Rate</div>
+            <div class="stat-value">94.2%</div>
+            <div class="stat-change down">↓ 1% vs last month</div>
+          </div>
+        </div>
+        
+        <!-- Charts -->
+        <div class="chart-section">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Daily GMV Trend</div>
+              <div class="chart-period">Last 30 days</div>
+            </div>
+            <div class="chart-placeholder">
+              <div class="chart-bar" style="height: 60%;"></div>
+              <div class="chart-bar" style="height: 75%;"></div>
+              <div class="chart-bar" style="height: 55%;"></div>
+              <div class="chart-bar" style="height: 80%;"></div>
+              <div class="chart-bar" style="height: 90%;"></div>
+              <div class="chart-bar" style="height: 70%;"></div>
+              <div class="chart-bar" style="height: 85%;"></div>
+              <div class="chart-bar" style="height: 65%;"></div>
+              <div class="chart-bar" style="height: 78%;"></div>
+              <div class="chart-bar" style="height: 92%;"></div>
+              <div class="chart-bar" style="height: 88%;"></div>
+              <div class="chart-bar" style="height: 72%;"></div>
+            </div>
+          </div>
+          
+          <div class="chart-card">
+            <div class="chart-header">
+              <div class="chart-title">Top Departments</div>
+              <div class="chart-period">This month</div>
+            </div>
+            <div class="products-list">
+              <div class="product-row">
+                <div class="product-rank">1</div>
+                <div class="product-name">Produce</div>
+                <div class="product-value">$412K</div>
+              </div>
+              <div class="product-row">
+                <div class="product-rank">2</div>
+                <div class="product-name">Dairy & Eggs</div>
+                <div class="product-value">$298K</div>
+              </div>
+              <div class="product-row">
+                <div class="product-rank">3</div>
+                <div class="product-name">Meat & Seafood</div>
+                <div class="product-value">$276K</div>
+              </div>
+              <div class="product-row">
+                <div class="product-rank">4</div>
+                <div class="product-name">Beverages</div>
+                <div class="product-value">$234K</div>
+              </div>
+              <div class="product-row">
+                <div class="product-rank">5</div>
+                <div class="product-name">Bakery</div>
+                <div class="product-value">$189K</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info Modal -->
+  <div class="modal-overlay" id="modal-info">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-icon">🚁</div>
+        <div class="modal-title">Drone Delivery Pilot</div>
+        <div class="modal-subtitle">Be among the first to offer autonomous delivery</div>
+      </div>
+      <div class="modal-body">
+        <div class="modal-features">
+          <div class="modal-feature">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-text">
+              <div class="feature-title">Faster delivery for small orders</div>
+              <div class="feature-desc">15-25 minute delivery for orders under 10 items and 5 lbs</div>
+            </div>
+          </div>
+          <div class="modal-feature">
+            <div class="feature-icon">🏆</div>
+            <div class="feature-text">
+              <div class="feature-title">Differentiate from competitors</div>
+              <div class="feature-desc">Offer cutting-edge delivery before other retailers in your market</div>
+            </div>
+          </div>
+          <div class="modal-feature">
+            <div class="feature-icon">🏬</div>
+            <div class="feature-text">
+              <div class="feature-title">No operational changes</div>
+              <div class="feature-desc">Shoppers still pick orders in-store. Drone handles last-mile only.</div>
+            </div>
+          </div>
+          <div class="modal-feature">
+            <div class="feature-icon">📍</div>
+            <div class="feature-text">
+              <div class="feature-title">Limited pilot markets</div>
+              <div class="feature-desc">Starting in Phoenix suburbs with select stores</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-cta">
+          <button class="modal-btn modal-btn-primary" onclick="showModal('modal-success')">
+            Request to Join Pilot
+          </button>
+          <button class="modal-btn modal-btn-secondary" onclick="closeModals()">
+            Maybe Later
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="modal-success">
+    <div class="modal">
+      <div class="success-content">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Interest Registered!</div>
+        <div class="success-text">
+          Thanks for your interest in the Drone Delivery Pilot. Your Instacart representative will reach out within 2 business days to discuss next steps.
+        </div>
+        <button class="modal-btn modal-btn-primary" onclick="closeModals()">
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function showModal(modalId) {
+      closeModals();
+      document.getElementById(modalId).classList.add('active');
+    }
+    
+    function closeModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+    
+    // Close on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModals();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

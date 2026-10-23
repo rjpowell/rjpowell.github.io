@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sources & FAQ | Instacart Autonomous Delivery</title>
+  <style>
+    :root {
+      --green: #0AAD0A;
+      --green-dark: #099309;
+      --green-light: #E8F5E8;
+      --tan: #FAF1E5;
+      --text: #1A1A1A;
+      --muted: #666;
+      --border: #E5E5E5;
+      --bg: #F5F5F5;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 24px 40px;
+    }
+    
+    .header-content {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .back-link {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+    
+    .section {
+      margin-bottom: 48px;
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--text);
+    }
+    
+    /* Sources */
+    .source-category {
+      margin-bottom: 28px;
+    }
+    
+    .source-category-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    
+    .source-item {
+      background: white;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+    
+    .source-claim {
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    
+    .source-link {
+      font-size: 14px;
+      color: var(--green);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    
+    .source-link:hover {
+      text-decoration: underline;
+    }
+    
+    .source-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    
+    /* FAQ */
+    .faq-item {
+      background: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+    }
+    
+    .faq-q {
+      font-weight: 600;
+      font-size: 17px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    
+    .faq-a {
+      color: var(--muted);
+      font-size: 15px;
+    }
+    
+    .faq-a strong {
+      color: var(--text);
+    }
+    
+    .faq-a ul {
+      margin-top: 12px;
+      margin-left: 20px;
+    }
+    
+    .faq-a li {
+      margin-bottom: 6px;
+    }
+    
+    .highlight {
+      background: var(--tan);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    
+    .footer a {
+      color: var(--green);
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <a href="start.html" class="back-link">← Back to Start</a>
+      <h1>Sources & FAQ</h1>
+    </div>
+  </div>
+  
+  <div class="container">
+    <!-- Sources -->
+    <div class="section" id="sources">
+      <div class="section-title">Sources</div>
+      
+      <div class="source-category">
+        <div class="source-category-title">Amazon</div>
+        <div class="source-item">
+          <div class="source-claim">Amazon drone delivery costs $63 per package (vs $3.50 standard)</div>
+          <a href="https://www.bloomberg.com/news/features/2024-07-15/amazon-drone-delivery-how-bezos-s-dream-went-wrong" class="source-link" target="_blank">Bloomberg: "How Bezos's Drone Dream Went Wrong" (July 2024)</a>
+          <div class="source-note">Internal Amazon data reported by Bloomberg. 18x more expensive than standard delivery.</div>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">Amazon laid off drone team, scaled back operations</div>
+          <a href="https://www.cnbc.com/2024/06/27/amazon-prime-air-drone-delivery-layoffs.html" class="source-link" target="_blank">CNBC: "Amazon lays off Prime Air drone delivery team" (June 2024)</a>
+        </div>
+      </div>
+      
+      <div class="source-category">
+        <div class="source-category-title">Walmart</div>
+        <div class="source-item">
+          <div class="source-claim">Walmart completed 1 million drone deliveries</div>
+          <a href="https://corporate.walmart.com/news/2024/04/09/walmart-celebrates-one-million-drone-deliveries" class="source-link" target="_blank">Walmart Corporate: "Walmart Celebrates One Million Drone Deliveries" (April 2024)</a>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">Only 70 of 4,600 stores have drone delivery (1.5%)</div>
+          <a href="https://www.supplychaindive.com/news/walmart-drone-delivery-expansion-wing-zipline/702847/" class="source-link" target="_blank">Supply Chain Dive: Walmart drone expansion coverage</a>
+          <div class="source-note">Despite 1M deliveries headline, coverage is extremely limited.</div>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">Walmart handles 3.5B same/next-day units annually</div>
+          <a href="https://corporate.walmart.com/about/annual-report" class="source-link" target="_blank">Walmart Annual Report / Earnings Calls</a>
+          <div class="source-note">1M drone deliveries = 0.03% of total same/next-day volume. Rounding error.</div>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">Walmart drone challenges: high per-delivery cost, limited payload, weather constraints</div>
+          <a href="https://www.fool.com/investing/2024/05/10/walmart-drone-delivery-challenges/" class="source-link" target="_blank">Motley Fool analysis of Walmart drone economics</a>
+        </div>
+      </div>
+      
+      <div class="source-category">
+        <div class="source-category-title">Instacart</div>
+        <div class="source-item">
+          <div class="source-claim">Instacart Platform Portal (retailer dashboard)</div>
+          <a href="https://docs.instacart.com/storefront/concepts/instacart_platform_portal" class="source-link" target="_blank">Instacart Docs: Platform Portal</a>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">Shopper terminology and business model</div>
+          <a href="https://docs.instacart.com/glossary" class="source-link" target="_blank">Instacart Docs: Glossary</a>
+        </div>
+      </div>
+      
+      <div class="source-category">
+        <div class="source-category-title">Drone Providers</div>
+        <div class="source-item">
+          <div class="source-claim">Wing (Alphabet/Google) - FAA certified, Walmart partner</div>
+          <a href="https://wing.com/" class="source-link" target="_blank">wing.com</a>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">Nuro - Autonomous sidewalk/road robots, Kroger/7-Eleven partnerships</div>
+          <a href="https://www.nuro.ai/" class="source-link" target="_blank">nuro.ai</a>
+        </div>
+        <div class="source-item">
+          <div class="source-claim">DroneUp - Walmart's primary drone partner</div>
+          <a href="https://www.droneup.com/" class="source-link" target="_blank">droneup.com</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- FAQ -->
+    <div class="section" id="faq">
+      <div class="section-title">FAQ</div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Why Phoenix suburbs?</div>
+        <div class="faq-a">
+          Because it's the path of least resistance:
+          <ul>
+            <li><strong>Weather:</strong> 299 sunny days/year. Drones don't fly in rain, snow, or high wind. Phoenix has almost none of that.</li>
+            <li><strong>Regulatory:</strong> Arizona already has FAA drone delivery approvals. Wing and DroneUp operate there.</li>
+            <li><strong>Use case fit:</strong> Suburban = longer delivery distances, lower shopper density. Exactly where drone economics might work.</li>
+          </ul>
+          Could also consider Dallas-Fort Worth or parts of Florida. But Phoenix has the cleanest conditions for a first test.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Who are we getting RFPs from?</div>
+        <div class="faq-a">
+          Three providers worth talking to:
+          <ul>
+            <li><strong>Wing (Alphabet):</strong> Most mature. FAA Part 135 certified. Already delivers for Walmart. Aerial drones.</li>
+            <li><strong>Nuro:</strong> Sidewalk/road robots, not aerial. Different tech, potentially more payload. Kroger partnership.</li>
+            <li><strong>DroneUp:</strong> Walmart's primary partner. Deep retail experience. Aerial drones.</li>
+          </ul>
+          The RFP is to get <span class="highlight">real pricing</span>, not marketing numbers. If nobody can hit <$25/delivery, we stop.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Why a Discovery Sprint instead of just doing a pilot?</div>
+        <div class="faq-a">
+          Because pilots are expensive and hard to kill. A 6-month pilot with Wing or Nuro could cost $500K+ in integration, ops, and marketing. Discovery costs <$50K and answers the same questions:
+          <ul>
+            <li>Do customers actually want this? (Fake door)</li>
+            <li>Will shoppers revolt? (Survey)</li>
+            <li>Can providers hit reasonable pricing? (RFP)</li>
+            <li>Will retailers opt in? (Portal CTA)</li>
+          </ul>
+          If any of those fail, you've saved $450K+ and 6 months. If they all pass, you go into the pilot with confidence instead of hope.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Why not build in-house?</div>
+        <div class="faq-a">
+          Instacart is a marketplace, not an aerospace company. Building drones requires:
+          <ul>
+            <li>FAA certification (takes years)</li>
+            <li>Hardware manufacturing</li>
+            <li>Airspace management software</li>
+            <li>Maintenance and repair infrastructure</li>
+          </ul>
+          Amazon tried this with billions of dollars and 10+ years. They're still at $63/delivery. Partnering lets Instacart test the market without betting the company on hardware.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">What about shopper backlash?</div>
+        <div class="faq-a">
+          This is the biggest brand risk. But the framing matters:
+          <ul>
+            <li><strong>Threat framing:</strong> "Drones are taking your deliveries" → Bad.</li>
+            <li><strong>Benefit framing:</strong> "Drones take small, low-tip orders so you can focus on larger, higher-tip orders" → Maybe fine?</li>
+          </ul>
+          The shopper survey tests both framings. If shoppers hate both, we stop. If they accept the benefit framing, there's a path forward. We don't guess—we measure.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">Isn't 1M Walmart deliveries a big deal?</div>
+        <div class="faq-a">
+          No. Context matters:
+          <ul>
+            <li>Walmart does <strong>3.5 billion</strong> same/next-day deliveries annually.</li>
+            <li>1M drone deliveries = <strong>0.03%</strong> of that volume.</li>
+            <li>Only <strong>70 of 4,600 stores</strong> (1.5%) have drone capability.</li>
+            <li>Per-delivery cost is still high (estimated $15-25+).</li>
+          </ul>
+          The headline sounds impressive. The math says it's a rounding error and likely still losing money.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">What orders are actually drone-eligible?</div>
+        <div class="faq-a">
+          Strict constraints:
+          <ul>
+            <li><strong>Weight:</strong> ≤5 lbs (rules out most full grocery runs)</li>
+            <li><strong>Items:</strong> ≤10 items</li>
+            <li><strong>Distance:</strong> ≤3 miles from store</li>
+            <li><strong>Weather:</strong> Clear, low wind</li>
+            <li><strong>Location:</strong> Customer must have landing space (no apartments)</li>
+          </ul>
+          This might be 5-15% of Instacart orders. The technical review in discovery validates the exact percentage.
+        </div>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-q">What's the kill threshold for fake door click rate?</div>
+        <div class="faq-a">
+          <strong>&lt;2% = stop.</strong> That means fewer than 2 in 100 eligible customers chose drone delivery when offered. If people don't even click a free, faster option, there's no demand to serve. Save your money.
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="footer">
+    <a href="start.html">← Back to Start</a> · <a href="index.html">View Slides</a>
+  </div>
+</body>
+</html>

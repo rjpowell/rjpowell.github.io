@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instacart | Delivery Feedback Survey</title>
+  <style>
+    :root {
+      --green: #0AAD0A;
+      --green-light: #E8F5E8;
+      --green-dark: #099309;
+      --orange: #FF7009;
+      --orange-light: #FFF3EB;
+      --tan: #FAF1E5;
+      --text: #1A1A1A;
+      --muted: #666;
+      --border: #E0E0E0;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #F5F5F5;
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+    }
+    
+    .header-content {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    
+    .header-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    .intro {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .intro h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .intro p {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    
+    .intro .time {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--tan);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: var(--text);
+      margin-top: 8px;
+    }
+    
+    .form-section {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .section-desc {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+    
+    .question {
+      margin-bottom: 28px;
+    }
+    
+    .question:last-child {
+      margin-bottom: 0;
+    }
+    
+    .question-label {
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: block;
+    }
+    
+    .required {
+      color: var(--orange);
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .option:hover {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    
+    .option input {
+      margin-top: 2px;
+      accent-color: var(--green);
+      width: 18px;
+      height: 18px;
+    }
+    
+    .option-text {
+      flex: 1;
+    }
+    
+    .option-main {
+      font-weight: 500;
+    }
+    
+    .option-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    
+    .scale-options {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    
+    .scale-option {
+      flex: 1;
+      min-width: 60px;
+      text-align: center;
+      padding: 12px 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .scale-option:hover {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    
+    .scale-option input {
+      display: none;
+    }
+    
+    .scale-option.selected {
+      border-color: var(--green);
+      background: var(--green);
+      color: white;
+    }
+    
+    .scale-number {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    
+    .scale-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    
+    .scale-option.selected .scale-label {
+      color: rgba(255,255,255,0.8);
+    }
+    
+    .scale-endpoints {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      resize: vertical;
+      min-height: 100px;
+      transition: border-color 0.15s ease;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--green);
+    }
+    
+    .scenario-box {
+      background: var(--tan);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .scenario-title {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .scenario-icon {
+      font-size: 20px;
+    }
+    
+    .scenario-text {
+      font-size: 15px;
+      color: var(--text);
+    }
+    
+    .submit-section {
+      background: white;
+      border-radius: 12px;
+      padding: 32px;
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+    
+    .submit-btn {
+      background: var(--green);
+      color: white;
+      border: none;
+      padding: 16px 48px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    
+    .submit-btn:hover {
+      background: var(--green-dark);
+    }
+    
+    .privacy-note {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    /* Success state */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 48px 32px;
+    }
+    
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--green-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 32px;
+    }
+    
+    .success-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    
+    .success-text {
+      color: var(--muted);
+      font-size: 16px;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Checkbox options */
+    .checkbox-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .checkbox-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    
+    .checkbox-option:hover {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    
+    .checkbox-option input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--green);
+      width: 18px;
+      height: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo">I</div>
+      <div class="header-title">Instacart Customer Research</div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="intro">
+      <h1>Help Shape the Future of Delivery</h1>
+      <p>We're exploring new delivery options and want to hear from you! Your feedback will help us build better experiences.</p>
+      <div class="time">⏱️ Takes about 2 minutes</div>
+    </div>
+    
+    <form id="survey-form">
+      <!-- Section 1: Interest -->
+      <div class="form-section">
+        <div class="section-title">Drone Delivery Interest</div>
+        <div class="section-desc">Help us understand your interest in autonomous delivery</div>
+        
+        <div class="question">
+          <label class="question-label">How interested are you in drone delivery for groceries? <span class="required">*</span></label>
+          <div class="scale-options" id="scale1">
+            <label class="scale-option" onclick="selectScale(this, 'interest')">
+              <input type="radio" name="interest" value="1" required>
+              <div class="scale-number">1</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'interest')">
+              <input type="radio" name="interest" value="2">
+              <div class="scale-number">2</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'interest')">
+              <input type="radio" name="interest" value="3">
+              <div class="scale-number">3</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'interest')">
+              <input type="radio" name="interest" value="4">
+              <div class="scale-number">4</div>
+            </label>
+            <label class="scale-option" onclick="selectScale(this, 'interest')">
+              <input type="radio" name="interest" value="5">
+              <div class="scale-number">5</div>
+            </label>
+          </div>
+          <div class="scale-endpoints">
+            <span>Not interested</span>
+            <span>Very interested</span>
+          </div>
+        </div>
+        
+        <div class="question">
+          <label class="question-label">Would you try drone delivery if it were available? <span class="required">*</span></label>
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="would_try" value="definitely" required>
+              <span class="option-text">
+                <span class="option-main">Definitely yes</span>
+                <span class="option-sub">I'd try it on my next eligible order</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="would_try" value="probably">
+              <span class="option-text">
+                <span class="option-main">Probably yes</span>
+                <span class="option-sub">I'd consider it for the right order</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="would_try" value="unsure">
+              <span class="option-text">
+                <span class="option-main">Not sure</span>
+                <span class="option-sub">I'd need more information first</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="would_try" value="probably_not">
+              <span class="option-text">
+                <span class="option-main">Probably not</span>
+                <span class="option-sub">I have some concerns</span>
+              </span>
+            </label>
+            <label class="option">
+              <input type="radio" name="would_try" value="definitely_not">
+              <span class="option-text">
+                <span class="option-main">Definitely not</span>
+                <span class="option-sub">I prefer human shoppers</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section 2: What matters -->
+      <div class="form-section">
+        <div class="section-title">What Matters Most</div>
+        <div class="section-desc">Select all that apply</div>
+        
+        <div class="question">
+          <label class="question-label">What would make drone delivery appealing to you? <span class="required">*</span></label>
+          <div class="checkbox-options">
+            <label class="checkbox-option">
+              <input type="checkbox" name="appeal" value="faster">
+              <span class="option-text">
+                <span class="option-main">⚡ Faster delivery</span>
+                <span class="option-sub">Getting my order in 15-25 minutes</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="appeal" value="cheaper">
+              <span class="option-text">
+                <span class="option-main">💰 Lower delivery fees</span>
+                <span class="option-sub">Free or reduced-cost delivery</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="appeal" value="contactless">
+              <span class="option-text">
+                <span class="option-main">🚫 Contactless delivery</span>
+                <span class="option-sub">No interaction required</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="appeal" value="tracking">
+              <span class="option-text">
+                <span class="option-main">📍 Real-time tracking</span>
+                <span class="option-sub">Watch my drone on a map</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="appeal" value="novelty">
+              <span class="option-text">
+                <span class="option-main">✨ Cool factor</span>
+                <span class="option-sub">It's new and exciting!</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="appeal" value="eco">
+              <span class="option-text">
+                <span class="option-main">🌱 Environmental benefits</span>
+                <span class="option-sub">Lower carbon footprint than cars</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section 3: Concerns -->
+      <div class="form-section">
+        <div class="section-title">Potential Concerns</div>
+        <div class="section-desc">Help us understand what might hold you back</div>
+        
+        <div class="question">
+          <label class="question-label">What concerns, if any, do you have about drone delivery? <span class="required">*</span></label>
+          <div class="checkbox-options">
+            <label class="checkbox-option">
+              <input type="checkbox" name="concerns" value="damage">
+              <span class="option-text">
+                <span class="option-main">📦 Package damage</span>
+                <span class="option-sub">Worried about my groceries getting damaged</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="concerns" value="theft">
+              <span class="option-text">
+                <span class="option-main">🔒 Package theft</span>
+                <span class="option-sub">Concerned about packages left outside</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="concerns" value="reliability">
+              <span class="option-text">
+                <span class="option-main">❓ Reliability</span>
+                <span class="option-sub">Will it actually show up?</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="concerns" value="safety">
+              <span class="option-text">
+                <span class="option-main">⚠️ Safety</span>
+                <span class="option-sub">Drones flying over my neighborhood</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="concerns" value="jobs">
+              <span class="option-text">
+                <span class="option-main">👷 Impact on shopper jobs</span>
+                <span class="option-sub">Worried about people losing work</span>
+              </span>
+            </label>
+            <label class="checkbox-option">
+              <input type="checkbox" name="concerns" value="none">
+              <span class="option-text">
+                <span class="option-main">✅ No concerns</span>
+                <span class="option-sub">I'm ready to try it!</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Section 4: Open feedback -->
+      <div class="form-section">
+        <div class="section-title">Final Thoughts</div>
+        
+        <div class="question">
+          <label class="question-label">Anything else you'd like to share about drone delivery?</label>
+          <textarea name="feedback" placeholder="Share your thoughts..."></textarea>
+        </div>
+      </div>
+      
+      <!-- Submit -->
+      <div class="submit-section">
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+        <p class="privacy-note">🔒 Your responses are anonymous and help improve Instacart.</p>
+        
+        <div class="success-message" id="success">
+          <div class="success-icon">✓</div>
+          <div class="success-title">Thank you!</div>
+          <div class="success-text">Your feedback has been submitted. We appreciate you helping shape the future of delivery!</div>
+          <a href="customer-prototype.html" class="back-link">← Back to checkout</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  
+  <script>
+    function selectScale(el, name) {
+      const parent = el.parentElement;
+      parent.querySelectorAll('.scale-option').forEach(opt => opt.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+    
+    document.getElementById('survey-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const form = document.getElementById('survey-form');
+      const sections = form.querySelectorAll('.form-section');
+      sections.forEach(s => s.style.display = 'none');
+      
+      const submitSection = form.querySelector('.submit-section');
+      submitSection.querySelector('.submit-btn').style.display = 'none';
+      submitSection.querySelector('.privacy-note').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
